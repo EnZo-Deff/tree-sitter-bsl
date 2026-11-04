@@ -1,0 +1,22 @@
+name: Build BSL DLL
+
+on:
+  workflow_dispatch: # Позволяет запускать сборку вручную
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install tree-sitter CLI
+        run: npm install -g tree-sitter-cli
+      - name: Build DLL
+        run: tree-sitter build grammars/bsl -o bsl.dll
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bsl-dll
+          path: bsl.dll
